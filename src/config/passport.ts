@@ -11,8 +11,7 @@ export default (passport: any) => {
     passport.use(
         new Strategy(options, async (jwt_payload: any, done: any) => {
             try {
-                const database1 = await database
-                const userRepository = database1.getRepository(User)
+                const userRepository = (await database).getRepository(User)
                 const user = await userRepository.findOne({ id: jwt_payload.userId })
                 if (user) return done(null, user)
                 return done(null, false)
