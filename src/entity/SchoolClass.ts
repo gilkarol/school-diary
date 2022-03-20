@@ -9,6 +9,6 @@ export class SchoolClass {
 	@Column()
 	fullName?: string;
 
-	@OneToMany((type) => Student, (student) => student.schoolClass)
+	@OneToMany(() => Student, (student) => student.schoolClass)
 	students?: Student[];
 }
