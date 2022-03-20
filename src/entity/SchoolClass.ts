@@ -1,5 +1,5 @@
 import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
-import { Student } from './Student';
+import { UserAccount } from './UserAccount';
 
 @Entity()
 export class SchoolClass {
@@ -9,6 +9,6 @@ export class SchoolClass {
 	@Column()
 	fullName?: string;
 
-	@OneToMany(() => Student, (student) => student.schoolClass)
-	students?: Student[];
+	@OneToMany(() => UserAccount, (userAccount) => userAccount.schoolClass)
+	students?: UserAccount[]; 
 }
