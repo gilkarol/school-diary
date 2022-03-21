@@ -18,7 +18,6 @@ export class UserAccountService {
 		const userAccount = await this.userAccountRepository.findOne({
 			email: email,
 		});
-		console.log(userAccount);
 		if (!userAccount) {
 			throw new HttpError(404, 'User account not found!');
 		}
