@@ -1,5 +1,6 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { SchoolClass } from './SchoolClass';
+import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { StudentProfile } from './StudentProfile';
+import { TeacherProfile } from './TeacherProfile';
 
 @Entity()
 export class UserAccount {
@@ -12,15 +13,13 @@ export class UserAccount {
 	@Column()
 	password?: string;
 
-	@Column()
-	firstName?: string;
+	@OneToOne(() => StudentProfile, {
+		nullable: true,
+	})
+	studentProfile?: StudentProfile;
 
-	@Column()
-	lastName?: string;
-
-	@Column()
-	birthdate?: Date;
-
-	@ManyToOne(() => SchoolClass, (schoolClass) => schoolClass.students)
-	schoolClass?: SchoolClass;
+	@OneToOne(() => TeacherProfile, {
+		nullable: true,
+	})
+	teacherProfile?: TeacherProfile;
 }
