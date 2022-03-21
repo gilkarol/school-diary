@@ -1,6 +1,8 @@
-import { createConnection } from 'typeorm';
-import dotenv from 'dotenv'
-dotenv.config()
+import { createConnection, useContainer } from 'typeorm';
+import dotenv from 'dotenv';
+import { Container } from 'typeorm-typedi-extensions';
+dotenv.config();
+useContainer(Container);
 
 export default createConnection({
 	type: 'postgres',
@@ -10,5 +12,5 @@ export default createConnection({
 	password: process.env.DATABASE_PASSWORD,
 	database: 'diary',
 	synchronize: true,
-	entities: [__dirname  + '/../entity/**/*.js'],
+	entities: [__dirname + '/../entity/**/*.js'],
 });
