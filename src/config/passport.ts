@@ -1,5 +1,6 @@
 import { Strategy, ExtractJwt } from 'passport-jwt';
-import { User } from '../entity/User';
+
+import { UserAccount } from '../entity/UserAccount';
 import database from '../util/database';
 
 export default (passport: any) => {
@@ -7,11 +8,12 @@ export default (passport: any) => {
 		jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
 		secretOrKey: process.env.JWT_SECRET_TOKEN,
 	};
+
 	passport.use(
 		new Strategy(options, async (jwt_payload: any, done: any) => {
 			try {
 				const user = (await database)
-					.getRepository(User)
+					.getRepository(UserAccount)
 					.findOne({ id: jwt_payload.userId });
 				if (user) return done(null, user);
 				return done(null, false);
