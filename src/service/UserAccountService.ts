@@ -4,7 +4,7 @@ import bcryptjs from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { InjectRepository } from 'typeorm-typedi-extensions';
 
-import { UserAccount } from '../entity/UserAccount';
+import { UserAccount, UserAccountDto } from '../entity/UserAccount';
 import { HttpError } from '../util/classes';
 import { comparePassword, hashPassword } from '../util/hash';
 
@@ -40,7 +40,7 @@ export class UserAccountService {
 	async login(userAccountData: UserAccount): Promise<UserAccount> {
 		const userAccount = await this.findByEmail(userAccountData.email!);
 		if (
-			await comparePassword(userAccountData.password!, userAccount.password!)
+			!await comparePassword(userAccountData.password!, userAccount.password!)
 		) {
 			throw new HttpError(409, 'Passwords does not match!');
 		}
