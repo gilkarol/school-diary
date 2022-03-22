@@ -6,6 +6,7 @@ import { InjectRepository } from 'typeorm-typedi-extensions';
 
 import { UserAccount } from '../entity/UserAccount';
 import { HttpError } from '../util/classes';
+import { comparePassword, hashPassword } from '../util/hash';
 
 @Service()
 export class UserAccountService {
@@ -31,21 +32,16 @@ export class UserAccountService {
 		if (emailAlreadyExists) {
 			throw new HttpError(409, 'Account using this email already exists!');
 		}
-		userAccountData.password = await bcryptjs.hash(
-			userAccountData.password!,
-			10
-		);
+		userAccountData.password = await hashPassword(userAccountData.password!);
 		const userAccount = this.userAccountRepository.create(userAccountData);
 		return await this.userAccountRepository.save(userAccount);
 	}
 
 	async login(userAccountData: UserAccount): Promise<UserAccount> {
 		const userAccount = await this.findByEmail(userAccountData.email!);
-		const isPasswordEqual = bcryptjs.compare(
-			userAccountData.password!,
-			userAccount!.password!
-		);
-		if (!isPasswordEqual) {
+		if (
+			await comparePassword(userAccountData.password!, userAccount.password!)
+		) {
 			throw new HttpError(409, 'Passwords does not match!');
 		}
 		return userAccount!;
