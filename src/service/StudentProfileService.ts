@@ -1,3 +1,4 @@
+import { Service } from 'typedi';
 import { Repository } from 'typeorm';
 import { InjectRepository } from 'typeorm-typedi-extensions';
 import {
@@ -6,7 +7,8 @@ import {
 } from '../entity/Profile';
 import { HttpError } from '../util/classes';
 
-export class ProfileService {
+@Service()
+export class StudentProfileService {
 	constructor(
 		@InjectRepository(Profile)
 		protected readonly profileRepository: Repository<Profile>
