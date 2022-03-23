@@ -1,13 +1,14 @@
+import { Service } from 'typedi';
 import { Repository } from 'typeorm';
 import { InjectRepository } from 'typeorm-typedi-extensions';
 import {
 	Profile,
-	StudentProfileDto,
 	TeacherProfileDto,
 } from '../entity/Profile';
 import { HttpError } from '../util/classes';
 
-export class ProfileService {
+@Service()
+export class TeacherProfileService {
 	constructor(
 		@InjectRepository(Profile)
 		private profileRepository: Repository<Profile>
