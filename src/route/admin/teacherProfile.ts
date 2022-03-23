@@ -4,6 +4,7 @@ import { Container } from 'typeorm-typedi-extensions';
 import { checkRole } from '../../middleware/checkRole';
 import { isAuth } from '../../middleware/isAuth';
 import { TeacherProfileService } from '../../service/TeacherProfileService';
+import { sendMailToRegisterUser } from '../../util/mail';
 
 const router = Router();
 
@@ -57,6 +58,7 @@ router.post(
 		try {
 			const { body } = req;
 			const teacherProfile = await teacherProfileService.create(body);
+			await sendMailToRegisterUser(teacherProfile.email!, teacherProfile.id!);
 			res.status(200).json({
 				message: 'Student profile created successfully!',
 				teacher_profile: teacherProfile,
