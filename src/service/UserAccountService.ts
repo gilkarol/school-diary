@@ -28,32 +28,42 @@ export class UserAccountService {
 		return userAccount;
 	}
 
-	async createStudentAccount(userAccountDto: UserAccountDto): Promise<UserAccount> {
-		const studentProfileService = Container.get(StudentProfileService)
-		const studentProfile = await studentProfileService.findById(userAccountDto.signupToken!)
-		userAccountDto.profileRole = 'student'
-		userAccountDto.email = studentProfile.email!
-		const userAccount = this.userAccountRepository.create(userAccountDto)
-		studentProfile.userAccount = userAccount
-		await studentProfileService.update(studentProfile)
-		return await this.userAccountRepository.save(userAccount)
+	async createStudentAccount(
+		userAccountDto: UserAccountDto
+	): Promise<UserAccount> {
+		const studentProfileService = Container.get(StudentProfileService);
+		const studentProfile = await studentProfileService.findById(
+			userAccountDto.signupToken!
+		);
+		userAccountDto.profileRole = 'student';
+		userAccountDto.email = studentProfile.email!;
+		const userAccount = this.userAccountRepository.create(userAccountDto);
+		studentProfile.userAccount = userAccount;
+		userAccount.profile = studentProfile;
+		await studentProfileService.update(studentProfile);
+		return await this.userAccountRepository.save(userAccount);
 	}
 
-	async createTeacherAccount(userAccountDto: UserAccountDto): Promise<UserAccount> {
-		const teacherProfileService = Container.get(TeacherProfileService)
-		const teacherProfile = await teacherProfileService.findById(userAccountDto.signupToken!)
-		userAccountDto.profileRole = 'teacher'
-		userAccountDto.email = teacherProfile.email!
-		const userAccount = this.userAccountRepository.create(userAccountDto)
-		teacherProfile.userAccount = userAccount
-		await teacherProfileService.update(teacherProfile)
-		return await this.userAccountRepository.save(userAccount)
+	async createTeacherAccount(
+		userAccountDto: UserAccountDto
+	): Promise<UserAccount> {
+		const teacherProfileService = Container.get(TeacherProfileService);
+		const teacherProfile = await teacherProfileService.findById(
+			userAccountDto.signupToken!
+		);
+		userAccountDto.profileRole = 'teacher';
+		userAccountDto.email = teacherProfile.email!;
+		const userAccount = this.userAccountRepository.create(userAccountDto);
+		teacherProfile.userAccount = userAccount;
+		userAccount.profile = teacherProfile;
+		await teacherProfileService.update(teacherProfile);
+		return await this.userAccountRepository.save(userAccount);
 	}
 
 	async login(userAccountDto: UserAccountDto): Promise<UserAccount> {
 		const userAccount = await this.findByEmail(userAccountDto.email!);
 		if (
-			!await comparePassword(userAccountDto.password!, userAccount.password!)
+			!(await comparePassword(userAccountDto.password!, userAccount.password!))
 		) {
 			throw new HttpError(409, 'Passwords does not match!');
 		}
