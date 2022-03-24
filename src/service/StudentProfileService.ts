@@ -27,17 +27,21 @@ export class StudentProfileService {
 	}
 
 	async findAll(): Promise<Profile[]> {
-		return await this.profileRepository.find({ profileType: 'student' });
+		return await this.profileRepository.find({ profileRole: 'student' });
 	}
 
 	async findById(id: string): Promise<Profile> {
 		const profile = await this.profileRepository.findOne({
 			id: id,
-			profileType: 'student',
+			profileRole: 'student',
 		});
 		if (!profile) {
 			throw new HttpError(404, 'This profile does not exist!');
 		}
 		return profile;
+	}
+
+	async update(studentProfile: Profile) {
+		return await this.profileRepository.save(studentProfile);
 	}
 }
