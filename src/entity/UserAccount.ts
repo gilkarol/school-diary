@@ -1,25 +1,30 @@
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { StudentProfile } from './StudentProfile';
-import { TeacherProfile } from './TeacherProfile';
+import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn } from 'typeorm';
+import uuid from '../util/uuid';
+import { Profile } from './Profile';
 
+export interface UserAccountDto {
+	email: string;
+	password: string;
+	profileRole: string;
+	signupToken?: string;
+}
 @Entity()
 export class UserAccount {
-	@PrimaryGeneratedColumn()
-	id?: number;
+	@PrimaryColumn({ default: uuid })
+	id?: string;
 
-	@Column()
+	@Column({ unique: true })
 	email?: string;
 
-	@Column()
+	@Column({})
 	password?: string;
 
-	@OneToOne(() => StudentProfile, {
+	@OneToOne(() => Profile, {
 		nullable: true,
 	})
-	studentProfile?: StudentProfile;
+	@JoinColumn()
+	profile?: Profile;
 
-	@OneToOne(() => TeacherProfile, {
-		nullable: true,
-	})
-	teacherProfile?: TeacherProfile;
+	@Column({ default: null })
+	profileRole?: string;
 }
