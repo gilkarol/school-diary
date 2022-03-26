@@ -19,15 +19,13 @@ export interface TeacherProfileDto {
 	firstName: string;
 	lastName: string;
 	profileRole: string;
+	classTutor: SchoolClass;
 }
 
 @Entity()
 export class Profile {
 	@PrimaryColumn({ default: uuid })
 	id?: string;
-
-	@Column()
-	profileType?: string;
 
 	@Column({ unique: true })
 	email?: string;
@@ -48,4 +46,7 @@ export class Profile {
 		nullable: true,
 	})
 	class?: SchoolClass;
+
+	@OneToOne(() => SchoolClass)
+	classTutor?: SchoolClass;
 }
