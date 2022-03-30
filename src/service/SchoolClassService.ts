@@ -40,10 +40,7 @@ export class SchoolClassService {
 		return await this.schoolClassRepository.save(schoolClass);
 	}
 
-	async removeTutorFromClass(
-		shortName: string,
-		teacherProfile: Profile
-	): Promise<SchoolClass> {
+	async removeTutorFromClass(shortName: string): Promise<SchoolClass> {
 		const schoolClass = await this.findByShortName(shortName);
 		schoolClass.tutor = undefined;
 		return await this.schoolClassRepository.save(schoolClass);
@@ -54,6 +51,9 @@ export class SchoolClassService {
 		studentProfile: Profile
 	): Promise<SchoolClass> {
 		const schoolClass = await this.findByShortName(shortName);
+		if (schoolClass.students?.indexOf(studentProfile) != -1) {
+			throw new HttpError(409, 'This student is already in a class!');
+		}
 		schoolClass.students?.push(studentProfile);
 		return await this.schoolClassRepository.save(schoolClass);
 	}
