@@ -34,7 +34,7 @@ router.post(
 	}
 );
 
-// ADD STUDENT DO CLASS
+// ADD STUDENT TO CLASS
 router.post(
 	'/:classShortName/addStudent/:studentId',
 	isAuth,
@@ -49,12 +49,35 @@ router.post(
 				classShortName,
 				studentProfile
 			);
-			res
-				.status(200)
-				.json({
-					message: 'Student has been successfully added to the class!',
-					school_class: schoolClass,
-				});
+			res.status(200).json({
+				message: 'Student has been successfully added to the class!',
+				school_class: schoolClass,
+			});
+		} catch (err) {
+			return next(err);
+		}
+	}
+);
+
+// REMOVE STUDENT FROM CLASS
+router.post(
+	'/:classShortName/removeStudent/:studentId',
+	isAuth,
+	checkRole('admin'),
+	async (req, res, next) => {
+		const schoolClassService = Container.get(SchoolClassService);
+		const studentProfileService = Container.get(StudentProfileService);
+		const { classShortName, studentId } = req.params;
+		try {
+			const studentProfile = await studentProfileService.findById(studentId);
+			const schoolClass = await schoolClassService.removeStudentFromClass(
+				classShortName,
+				studentProfile
+			);
+			res.status(200).json({
+				message: 'Student has been successfully removed from the class!',
+				school_class: schoolClass,
+			});
 		} catch (err) {
 			return next(err);
 		}

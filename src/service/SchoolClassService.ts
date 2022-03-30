@@ -57,4 +57,15 @@ export class SchoolClassService {
 		schoolClass.students?.push(studentProfile);
 		return await this.schoolClassRepository.save(schoolClass);
 	}
+
+	async removeStudentFromClass(
+		shortName: string,
+		studentProfile: Profile
+	): Promise<SchoolClass> {
+		const schoolClass = await this.findByShortName(shortName);
+		schoolClass.students = schoolClass.students?.filter(
+			(student) => student !== studentProfile
+		);
+		return await this.schoolClassRepository.save(schoolClass);
+	}
 }
