@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany, OneToOne, PrimaryColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryColumn } from 'typeorm';
 import { Profile } from './Profile';
 
 export interface SchoolClassDto {
@@ -16,6 +16,7 @@ export class SchoolClass {
 	fullName?: string;
 
 	@OneToOne(() => Profile, (profile) => profile.classTutor)
+	@JoinColumn()
 	tutor?: Profile;
 
 	@OneToMany(() => Profile, (profile) => profile.class)
