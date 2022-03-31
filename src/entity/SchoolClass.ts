@@ -2,10 +2,10 @@ import { Column, Entity, OneToMany, OneToOne, PrimaryColumn } from 'typeorm';
 import { Profile } from './Profile';
 
 export interface SchoolClassDto {
-	shortName: string,
-	fullName: string,
-	tutor?: Profile,
-students?: Profile[]
+	shortName: string;
+	fullName: string;
+	tutor?: Profile;
+	students?: Profile[];
 }
 @Entity()
 export class SchoolClass {
@@ -15,7 +15,7 @@ export class SchoolClass {
 	@Column()
 	fullName?: string;
 
-	@OneToOne(() => Profile)
+	@OneToOne(() => Profile, (profile) => profile.classTutor)
 	tutor?: Profile;
 
 	@OneToMany(() => Profile, (profile) => profile.class)

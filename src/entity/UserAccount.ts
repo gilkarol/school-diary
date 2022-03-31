@@ -19,9 +19,7 @@ export class UserAccount {
 	@Column({})
 	password?: string;
 
-	@OneToOne(() => Profile, {
-		nullable: true,
-	})
+	@OneToOne(() => Profile, (profile) => profile.userAccount)
 	@JoinColumn()
 	profile?: Profile;
 

@@ -1,6 +1,14 @@
-import { Column, Entity, ManyToOne, OneToOne, PrimaryColumn } from 'typeorm';
+import {
+	Column,
+	Entity,
+	ManyToOne,
+	OneToMany,
+	OneToOne,
+	PrimaryColumn,
+} from 'typeorm';
 
 import uuid from '../util/uuid';
+import { Demerit } from './Demerit';
 import { SchoolClass } from './SchoolClass';
 import { UserAccount } from './UserAccount';
 
@@ -30,7 +38,7 @@ export class Profile {
 	@Column({ unique: true })
 	email?: string;
 
-	@OneToOne(() => UserAccount)
+	@OneToOne(() => UserAccount, (userAccount) => userAccount.profile)
 	userAccount?: UserAccount;
 
 	@Column()
@@ -47,6 +55,9 @@ export class Profile {
 	})
 	class?: SchoolClass;
 
-	@OneToOne(() => SchoolClass)
+	@OneToOne(() => SchoolClass, (schoolClass) => schoolClass.tutor)
 	classTutor?: SchoolClass;
+
+	@OneToMany(() => Demerit, (demerit) => demerit.profile)
+	demerits?: Demerit[];
 }
