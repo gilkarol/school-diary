@@ -10,7 +10,9 @@ import uuid from '../util/uuid';
 import { Profile } from './Profile';
 
 export interface DemeritDto {
-	profile: Profile;
+	studentProfile: Profile;
+	teacherProfile: Profile,
+    type: string;
 	description: string;
 }
 
@@ -22,11 +24,14 @@ export class Demerit {
 	@Column()
 	type?: string;
 
-	@ManyToOne(() => Profile, (profile) => profile.demerits)
-	profile?: Profile;
+	@ManyToOne(() => Profile, (studentProfile) => studentProfile.demerits)
+	studentProfile?: Profile;
 
 	@Column()
 	description?: string;
+
+	@ManyToOne(() => Profile, (teacherProfile) => teacherProfile.demerits) 
+	teacherProfile?: Profile
 
 	@CreateDateColumn({
 		type: 'timestamp',
