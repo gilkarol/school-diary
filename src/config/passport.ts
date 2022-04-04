@@ -14,7 +14,10 @@ export default (passport: any) => {
 			try {
 				const user = (await database)
 					.getRepository(UserAccount)
-					.findOne({ id: jwt_payload.userId });
+					.createQueryBuilder('userAccount')
+					.innerJoinAndSelect('userAccount.profile', 'profile')
+					.where({ id: jwt_payload.id })
+					.getOne();
 				if (user) return done(null, user);
 				return done(null, false);
 			} catch (err) {
