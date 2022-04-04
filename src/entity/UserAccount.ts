@@ -5,6 +5,7 @@ import { Profile } from './Profile';
 export interface UserAccountDto {
 	email: string;
 	password: string;
+	profile?: Profile;
 	profileRole: string;
 	signupToken?: string;
 }
