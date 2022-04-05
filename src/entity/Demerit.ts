@@ -1,18 +1,11 @@
-import {
-	Column,
-	CreateDateColumn,
-	Entity,
-	ManyToOne,
-	PrimaryColumn,
-	UpdateDateColumn,
-} from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
 import uuid from '../util/uuid';
 import { Profile } from './Profile';
 
 export interface DemeritDto {
 	studentProfile: Profile;
-	teacherProfile: Profile,
-    type: string;
+	teacherProfile: Profile;
+	type: string;
 	description: string;
 }
 
@@ -24,25 +17,9 @@ export class Demerit {
 	@Column()
 	type?: string;
 
-	@ManyToOne(() => Profile, (studentProfile) => studentProfile.demerits)
+	@ManyToOne(() => Profile, (studentProfile) => studentProfile.studentDemerits)
 	studentProfile?: Profile;
 
 	@Column()
 	description?: string;
-
-	@ManyToOne(() => Profile, (teacherProfile) => teacherProfile.demerits) 
-	teacherProfile?: Profile
-
-	@CreateDateColumn({
-		type: 'timestamp',
-		default: () => 'CURRENT_TIMESTAMP(6)',
-	})
-	created_at?: Date;
-
-	@UpdateDateColumn({
-		type: 'timestamp',
-		default: () => 'CURRENT_TIMESTAMP(6)',
-		onUpdate: 'CURRENT_TIMESTAMP(6)',
-	})
-	updated_at?: Date;
 }

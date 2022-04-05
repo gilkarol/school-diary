@@ -50,14 +50,12 @@ export class Profile {
 	@Column()
 	lastName?: string;
 
-	@ManyToOne(() => SchoolClass, (schoolClass) => schoolClass.students, {
-		nullable: true,
-	})
+	@ManyToOne(() => SchoolClass, (schoolClass) => schoolClass.students)
 	class?: SchoolClass;
 
 	@OneToOne(() => SchoolClass, (schoolClass) => schoolClass.tutor)
 	classTutor?: SchoolClass;
 
-	@OneToMany(() => Demerit, (demerit) => demerit.profile)
-	demerits?: Demerit[];
+	@OneToMany(() => Demerit, (demerit) => demerit.studentProfile)
+	studentDemerits?: Demerit[];
 }
